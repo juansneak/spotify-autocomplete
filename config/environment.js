@@ -7,6 +7,7 @@ module.exports = function (environment) {
     rootURL: '/',
     locationType: 'auto',
     // accessToken: 'BQDH4qAJu2gU8rRwvBCYZqOSPVHCZH8vFT8lg3r3wl-X4_TEp_-zIz6Ir1FoJuCfcsMXragu2LJQG7O9tYUrr2hQkbo9qpyr4CbjDLIrQr4FhYi8Wds',
+    defaultImageUrl: 'https://semantic-ui.com/images/wireframe/image.png',
     spotify: {
       apiUrl: 'https://api.spotify.com',
       apiNamespace: 'v1',

@@ -1,41 +1,69 @@
-<h3>Artists</h3>
-<section class="ui grid">
-  {{#each @artists as |artist|}}
-    <div class="four wide column">
-      <Card
-        @name={{artist.name}}
-        @id={{artist.id}}
-        @imageUrl={{artist.imgMd}}
-        @route="search.artist"
-      />
-    </div>
-  {{/each}}
-</section>
+{{#if (or @artists.length @albums.length @tracks.length)}}
+  <div class="ui top attached tabular menu">
+    <a class="item {{if this.artistsTabActive "active"}}" {{on "click" this.showArtistsTab}}>{{t "artists"}}</a>
+    <a class="item {{if this.albumsTabActive "active"}}" {{on "click" this.showAlbumsTab}}>{{t "albums"}}</a>
+    <a class="item {{if this.tracksTabActive "active"}}" {{on "click" this.showTracksTab}}>{{t "tracks"}}</a>
+  </div>
 
-<h3>Albums</h3>
-<section class="ui grid">
-  {{#each @albums as |album|}}
-    <div class="four wide column">
-      <Card
-        @name={{album.name}}
-        @id={{album.id}}
-        @imageUrl={{album.imgMd}}
-        @route="search.album"
-      />
-    </div>
-  {{/each}}
-</section>
+  <div class="ui bottom attached tab segment active" data-tab="first">
 
-<h3>Tracks</h3>
-<section class="ui grid">
-  {{#each @tracks as |track|}}
-    <div class="four wide column">
-      <Card
-        @name={{track.name}}
-        @id={{track.id}}
-        @imageUrl={{track.album.imgMd}}
-        @route="search.track"
-      />
-    </div>
-  {{/each}}
-</section>
+    {{#if this.artistsTabActive}}
+      <section class="ui grid">
+        {{#each @artists as |artist|}}
+          <div class="four wide column">
+            <Card
+              @name={{artist.name}}
+              @id={{artist.id}}
+              @imageUrl={{artist.imgMd}}
+              @route="search.artist"
+            />
+          </div>
+        {{/each}}
+      </section>
+      <div class="button-container">
+        <button {{on "click" (perform @paginateArtists false)}} class="ui button">{{t "prev"}}</button>
+        <button {{on "click" (perform @paginateArtists true)}} class="ui button">{{t "next"}}</button>
+      </div>
+    {{/if}}
+
+    {{#if this.albumsTabActive}}
+      <section class="ui grid">
+        {{#each @albums as |album|}}
+          <div class="four wide column">
+            <Card
+              @name={{album.name}}
+              @id={{album.id}}
+              @imageUrl={{album.imgMd}}
+              @route="search.album"
+            />
+          </div>
+        {{/each}}
+      </section>
+      <div class="button-container">
+        <button {{on "click" (perform @paginateAlbums false)}} class="ui button">{{t "prev"}}</button>
+        <button {{on "click" (perform @paginateAlbums true)}} class="ui button">{{t "next"}}</button>
+      </div>
+    {{/if}}
+
+    {{#if this.tracksTabActive}}
+      <section class="ui grid">
+        {{#each @tracks as |track|}}
+          <div class="four wide column">
+            <Card
+              @name={{track.name}}
+              @id={{track.id}}
+              @imageUrl={{track.album.imgMd}}
+              @route="search.track"
+            />
+          </div>
+        {{/each}}
+      </section>
+      <div class="button-container">
+        <button {{on "click" (perform @paginateTracks false)}} class="ui button">{{t "prev"}}</button>
+        <button {{on "click" (perform @paginateTracks true)}} class="ui button">{{t "next"}}</button>
+      </div>
+    {{/if}}
+
+  </div>
+{{/if}}
+

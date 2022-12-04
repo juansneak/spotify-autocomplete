@@ -147,65 +147,143 @@
   var _default = (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, (0, _templateOnly.default)());
   _exports.default = _default;
 });
-;define("spotify-autocomplete/components/result-list/index", ["exports", "@ember/component", "@ember/template-factory", "@glimmer/component"], function (_exports, _component, _templateFactory, _component2) {
+;define("spotify-autocomplete/components/result-list/index", ["exports", "@ember/component", "@ember/template-factory", "@ember/object", "@glimmer/tracking", "@glimmer/component"], function (_exports, _component, _templateFactory, _object, _tracking, _component2) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
   _exports.default = void 0;
+  var _class, _descriptor, _descriptor2, _descriptor3;
+  function _initializerDefineProperty(target, property, descriptor, context) { if (!descriptor) return; Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 }); }
+  function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+  function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
+  function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+  function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) { var desc = {}; Object.keys(descriptor).forEach(function (key) { desc[key] = descriptor[key]; }); desc.enumerable = !!desc.enumerable; desc.configurable = !!desc.configurable; if ('value' in desc || desc.initializer) { desc.writable = true; } desc = decorators.slice().reverse().reduce(function (desc, decorator) { return decorator(target, property, desc) || desc; }, desc); if (context && desc.initializer !== void 0) { desc.value = desc.initializer ? desc.initializer.call(context) : void 0; desc.initializer = undefined; } if (desc.initializer === void 0) { Object.defineProperty(target, property, desc); desc = null; } return desc; }
+  function _initializerWarningHelper(descriptor, context) { throw new Error('Decorating class property failed. Please ensure that ' + 'proposal-class-properties is enabled and runs after the decorators transform.'); }
   const __COLOCATED_TEMPLATE__ = (0, _templateFactory.createTemplateFactory)(
   /*
-    <h3>Artists</h3>
-  <section class="ui grid">
-    {{#each @artists as |artist|}}
-      <div class="four wide column">
-        <Card
-          @name={{artist.name}}
-          @id={{artist.id}}
-          @imageUrl={{artist.imgMd}}
-          @route="search.artist"
-        />
-      </div>
-    {{/each}}
-  </section>
+    {{#if (or @artists.length @albums.length @tracks.length)}}
+    <div class="ui top attached tabular menu">
+      <a class="item {{if this.artistsTabActive "active"}}" {{on "click" this.showArtistsTab}}>{{t "artists"}}</a>
+      <a class="item {{if this.albumsTabActive "active"}}" {{on "click" this.showAlbumsTab}}>{{t "albums"}}</a>
+      <a class="item {{if this.tracksTabActive "active"}}" {{on "click" this.showTracksTab}}>{{t "tracks"}}</a>
+    </div>
   
-  <h3>Albums</h3>
-  <section class="ui grid">
-    {{#each @albums as |album|}}
-      <div class="four wide column">
-        <Card
-          @name={{album.name}}
-          @id={{album.id}}
-          @imageUrl={{album.imgMd}}
-          @route="search.album"
-        />
-      </div>
-    {{/each}}
-  </section>
+    <div class="ui bottom attached tab segment active" data-tab="first">
   
-  <h3>Tracks</h3>
-  <section class="ui grid">
-    {{#each @tracks as |track|}}
-      <div class="four wide column">
-        <Card
-          @name={{track.name}}
-          @id={{track.id}}
-          @imageUrl={{track.album.imgMd}}
-          @route="search.track"
-        />
-      </div>
-    {{/each}}
-  </section>
+      {{#if this.artistsTabActive}}
+        <section class="ui grid">
+          {{#each @artists as |artist|}}
+            <div class="four wide column">
+              <Card
+                @name={{artist.name}}
+                @id={{artist.id}}
+                @imageUrl={{artist.imgMd}}
+                @route="search.artist"
+              />
+            </div>
+          {{/each}}
+        </section>
+        <div class="button-container">
+          <button {{on "click" (perform @paginateArtists false)}} class="ui button">{{t "prev"}}</button>
+          <button {{on "click" (perform @paginateArtists true)}} class="ui button">{{t "next"}}</button>
+        </div>
+      {{/if}}
+  
+      {{#if this.albumsTabActive}}
+        <section class="ui grid">
+          {{#each @albums as |album|}}
+            <div class="four wide column">
+              <Card
+                @name={{album.name}}
+                @id={{album.id}}
+                @imageUrl={{album.imgMd}}
+                @route="search.album"
+              />
+            </div>
+          {{/each}}
+        </section>
+        <div class="button-container">
+          <button {{on "click" (perform @paginateAlbums false)}} class="ui button">{{t "prev"}}</button>
+          <button {{on "click" (perform @paginateAlbums true)}} class="ui button">{{t "next"}}</button>
+        </div>
+      {{/if}}
+  
+      {{#if this.tracksTabActive}}
+        <section class="ui grid">
+          {{#each @tracks as |track|}}
+            <div class="four wide column">
+              <Card
+                @name={{track.name}}
+                @id={{track.id}}
+                @imageUrl={{track.album.imgMd}}
+                @route="search.track"
+              />
+            </div>
+          {{/each}}
+        </section>
+        <div class="button-container">
+          <button {{on "click" (perform @paginateTracks false)}} class="ui button">{{t "prev"}}</button>
+          <button {{on "click" (perform @paginateTracks true)}} class="ui button">{{t "next"}}</button>
+        </div>
+      {{/if}}
+  
+    </div>
+  {{/if}}
+  
   
   */
   {
-    "id": "+D9aK3k4",
-    "block": "[[[10,\"h3\"],[12],[1,\"Artists\"],[13],[1,\"\\n\"],[10,\"section\"],[14,0,\"ui grid\"],[12],[1,\"\\n\"],[42,[28,[37,1],[[28,[37,1],[[30,1]],null]],null],null,[[[1,\"    \"],[10,0],[14,0,\"four wide column\"],[12],[1,\"\\n      \"],[8,[39,2],null,[[\"@name\",\"@id\",\"@imageUrl\",\"@route\"],[[30,2,[\"name\"]],[30,2,[\"id\"]],[30,2,[\"imgMd\"]],\"search.artist\"]],null],[1,\"\\n    \"],[13],[1,\"\\n\"]],[2]],null],[13],[1,\"\\n\\n\"],[10,\"h3\"],[12],[1,\"Albums\"],[13],[1,\"\\n\"],[10,\"section\"],[14,0,\"ui grid\"],[12],[1,\"\\n\"],[42,[28,[37,1],[[28,[37,1],[[30,3]],null]],null],null,[[[1,\"    \"],[10,0],[14,0,\"four wide column\"],[12],[1,\"\\n      \"],[8,[39,2],null,[[\"@name\",\"@id\",\"@imageUrl\",\"@route\"],[[30,4,[\"name\"]],[30,4,[\"id\"]],[30,4,[\"imgMd\"]],\"search.album\"]],null],[1,\"\\n    \"],[13],[1,\"\\n\"]],[4]],null],[13],[1,\"\\n\\n\"],[10,\"h3\"],[12],[1,\"Tracks\"],[13],[1,\"\\n\"],[10,\"section\"],[14,0,\"ui grid\"],[12],[1,\"\\n\"],[42,[28,[37,1],[[28,[37,1],[[30,5]],null]],null],null,[[[1,\"    \"],[10,0],[14,0,\"four wide column\"],[12],[1,\"\\n      \"],[8,[39,2],null,[[\"@name\",\"@id\",\"@imageUrl\",\"@route\"],[[30,6,[\"name\"]],[30,6,[\"id\"]],[30,6,[\"album\",\"imgMd\"]],\"search.track\"]],null],[1,\"\\n    \"],[13],[1,\"\\n\"]],[6]],null],[13],[1,\"\\n\"]],[\"@artists\",\"artist\",\"@albums\",\"album\",\"@tracks\",\"track\"],false,[\"each\",\"-track-array\",\"card\"]]",
+    "id": "+gYmKkhU",
+    "block": "[[[41,[28,[37,1],[[30,1,[\"length\"]],[30,2,[\"length\"]],[30,3,[\"length\"]]],null],[[[1,\"  \"],[10,0],[14,0,\"ui top attached tabular menu\"],[12],[1,\"\\n    \"],[11,3],[16,0,[29,[\"item \",[52,[30,0,[\"artistsTabActive\"]],\"active\"]]]],[4,[38,2],[\"click\",[30,0,[\"showArtistsTab\"]]],null],[12],[1,[28,[35,3],[\"artists\"],null]],[13],[1,\"\\n    \"],[11,3],[16,0,[29,[\"item \",[52,[30,0,[\"albumsTabActive\"]],\"active\"]]]],[4,[38,2],[\"click\",[30,0,[\"showAlbumsTab\"]]],null],[12],[1,[28,[35,3],[\"albums\"],null]],[13],[1,\"\\n    \"],[11,3],[16,0,[29,[\"item \",[52,[30,0,[\"tracksTabActive\"]],\"active\"]]]],[4,[38,2],[\"click\",[30,0,[\"showTracksTab\"]]],null],[12],[1,[28,[35,3],[\"tracks\"],null]],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n  \"],[10,0],[14,0,\"ui bottom attached tab segment active\"],[14,\"data-tab\",\"first\"],[12],[1,\"\\n\\n\"],[41,[30,0,[\"artistsTabActive\"]],[[[1,\"      \"],[10,\"section\"],[14,0,\"ui grid\"],[12],[1,\"\\n\"],[42,[28,[37,5],[[28,[37,5],[[30,1]],null]],null],null,[[[1,\"          \"],[10,0],[14,0,\"four wide column\"],[12],[1,\"\\n            \"],[8,[39,6],null,[[\"@name\",\"@id\",\"@imageUrl\",\"@route\"],[[30,4,[\"name\"]],[30,4,[\"id\"]],[30,4,[\"imgMd\"]],\"search.artist\"]],null],[1,\"\\n          \"],[13],[1,\"\\n\"]],[4]],null],[1,\"      \"],[13],[1,\"\\n      \"],[10,0],[14,0,\"button-container\"],[12],[1,\"\\n        \"],[11,\"button\"],[24,0,\"ui button\"],[4,[38,2],[\"click\",[28,[37,7],[[30,5],false],null]],null],[12],[1,[28,[35,3],[\"prev\"],null]],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"ui button\"],[4,[38,2],[\"click\",[28,[37,7],[[30,5],true],null]],null],[12],[1,[28,[35,3],[\"next\"],null]],[13],[1,\"\\n      \"],[13],[1,\"\\n\"]],[]],null],[1,\"\\n\"],[41,[30,0,[\"albumsTabActive\"]],[[[1,\"      \"],[10,\"section\"],[14,0,\"ui grid\"],[12],[1,\"\\n\"],[42,[28,[37,5],[[28,[37,5],[[30,2]],null]],null],null,[[[1,\"          \"],[10,0],[14,0,\"four wide column\"],[12],[1,\"\\n            \"],[8,[39,6],null,[[\"@name\",\"@id\",\"@imageUrl\",\"@route\"],[[30,6,[\"name\"]],[30,6,[\"id\"]],[30,6,[\"imgMd\"]],\"search.album\"]],null],[1,\"\\n          \"],[13],[1,\"\\n\"]],[6]],null],[1,\"      \"],[13],[1,\"\\n      \"],[10,0],[14,0,\"button-container\"],[12],[1,\"\\n        \"],[11,\"button\"],[24,0,\"ui button\"],[4,[38,2],[\"click\",[28,[37,7],[[30,7],false],null]],null],[12],[1,[28,[35,3],[\"prev\"],null]],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"ui button\"],[4,[38,2],[\"click\",[28,[37,7],[[30,7],true],null]],null],[12],[1,[28,[35,3],[\"next\"],null]],[13],[1,\"\\n      \"],[13],[1,\"\\n\"]],[]],null],[1,\"\\n\"],[41,[30,0,[\"tracksTabActive\"]],[[[1,\"      \"],[10,\"section\"],[14,0,\"ui grid\"],[12],[1,\"\\n\"],[42,[28,[37,5],[[28,[37,5],[[30,3]],null]],null],null,[[[1,\"          \"],[10,0],[14,0,\"four wide column\"],[12],[1,\"\\n            \"],[8,[39,6],null,[[\"@name\",\"@id\",\"@imageUrl\",\"@route\"],[[30,8,[\"name\"]],[30,8,[\"id\"]],[30,8,[\"album\",\"imgMd\"]],\"search.track\"]],null],[1,\"\\n          \"],[13],[1,\"\\n\"]],[8]],null],[1,\"      \"],[13],[1,\"\\n      \"],[10,0],[14,0,\"button-container\"],[12],[1,\"\\n        \"],[11,\"button\"],[24,0,\"ui button\"],[4,[38,2],[\"click\",[28,[37,7],[[30,9],false],null]],null],[12],[1,[28,[35,3],[\"prev\"],null]],[13],[1,\"\\n        \"],[11,\"button\"],[24,0,\"ui button\"],[4,[38,2],[\"click\",[28,[37,7],[[30,9],true],null]],null],[12],[1,[28,[35,3],[\"next\"],null]],[13],[1,\"\\n      \"],[13],[1,\"\\n\"]],[]],null],[1,\"\\n  \"],[13],[1,\"\\n\"]],[]],null],[1,\"\\n\"]],[\"@artists\",\"@albums\",\"@tracks\",\"artist\",\"@paginateArtists\",\"album\",\"@paginateAlbums\",\"track\",\"@paginateTracks\"],false,[\"if\",\"or\",\"on\",\"t\",\"each\",\"-track-array\",\"card\",\"perform\"]]",
     "moduleName": "spotify-autocomplete/components/result-list/index.hbs",
     "isStrictMode": false
   });
-  class ResultListComponent extends _component2.default {}
+  let ResultListComponent = (_class = class ResultListComponent extends _component2.default {
+    constructor() {
+      super(...arguments);
+      _initializerDefineProperty(this, "artistsTabActive", _descriptor, this);
+      _initializerDefineProperty(this, "albumsTabActive", _descriptor2, this);
+      _initializerDefineProperty(this, "tracksTabActive", _descriptor3, this);
+    }
+    showArtistsTab() {
+      this.artistsTabActive = true;
+      this.albumsTabActive = false;
+      this.tracksTabActive = false;
+    }
+    showAlbumsTab() {
+      this.artistsTabActive = false;
+      this.albumsTabActive = true;
+      this.tracksTabActive = false;
+    }
+    showTracksTab() {
+      this.artistsTabActive = false;
+      this.albumsTabActive = false;
+      this.tracksTabActive = true;
+    }
+  }, (_descriptor = _applyDecoratedDescriptor(_class.prototype, "artistsTabActive", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return true;
+    }
+  }), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, "albumsTabActive", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return false;
+    }
+  }), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, "tracksTabActive", [_tracking.tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return false;
+    }
+  }), _applyDecoratedDescriptor(_class.prototype, "showArtistsTab", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "showArtistsTab"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "showAlbumsTab", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "showAlbumsTab"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "showTracksTab", [_object.action], Object.getOwnPropertyDescriptor(_class.prototype, "showTracksTab"), _class.prototype)), _class);
   _exports.default = ResultListComponent;
   (0, _component.setComponentTemplate)(__COLOCATED_TEMPLATE__, ResultListComponent);
 });
@@ -238,6 +316,7 @@
   function _initializerWarningHelper(descriptor, context) { throw new Error('Decorating class property failed. Please ensure that ' + 'proposal-class-properties is enabled and runs after the decorators transform.'); }
   const DEBOUNCE_TIME = 1000;
   const UNLOAD_TIME = 1000;
+  const SEARCH_LIMIT = 9;
   let SearchController = (_class = class SearchController extends _controller.default {
     constructor() {
       super(...arguments);
@@ -260,15 +339,33 @@
       if (this.query) {
         try {
           yield this.ajax.search(this.query);
-          this.artists = this.store.peekAll('artist');
-          this.albums = this.store.peekAll('album');
-          this.tracks = this.store.peekAll('track');
+          this.artists = this.store.peekAll('artist').slice(0, SEARCH_LIMIT);
+          this.albums = this.store.peekAll('album').slice(0, SEARCH_LIMIT);
+          this.tracks = this.store.peekAll('track').slice(0, SEARCH_LIMIT);
         } catch (error) {
           console.log("THERE WAS AN ERROR HERE!!!");
           // TODO: handle 429 error ??
           console.log(error);
         }
       }
+    }
+    *paginateArtists(next) {
+      this.store.unloadAll('artist');
+      yield (0, _emberConcurrency.timeout)(UNLOAD_TIME);
+      yield this.ajax.paginateArtists(next, this.query);
+      this.artists = this.store.peekAll('artist').slice(0, SEARCH_LIMIT);
+    }
+    *paginateAlbums(next) {
+      this.store.unloadAll('album');
+      yield (0, _emberConcurrency.timeout)(UNLOAD_TIME);
+      yield this.ajax.paginateAlbums(next, this.query);
+      this.albums = this.store.peekAll('album').slice(0, SEARCH_LIMIT);
+    }
+    *paginateTracks(next) {
+      this.store.unloadAll('track');
+      yield (0, _emberConcurrency.timeout)(UNLOAD_TIME);
+      yield this.ajax.paginateTracks(next, this.query);
+      this.tracks = this.store.peekAll('track').slice(0, SEARCH_LIMIT);
     }
   }, (_descriptor = _applyDecoratedDescriptor(_class.prototype, "ajax", [_service.inject], {
     configurable: true,
@@ -290,7 +387,7 @@
     enumerable: true,
     writable: true,
     initializer: null
-  }), _applyDecoratedDescriptor(_class.prototype, "updateQuery", [_emberConcurrencyDecorators.task], Object.getOwnPropertyDescriptor(_class.prototype, "updateQuery"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "searchRecords", [_emberConcurrencyDecorators.restartableTask], Object.getOwnPropertyDescriptor(_class.prototype, "searchRecords"), _class.prototype)), _class);
+  }), _applyDecoratedDescriptor(_class.prototype, "updateQuery", [_emberConcurrencyDecorators.task], Object.getOwnPropertyDescriptor(_class.prototype, "updateQuery"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "searchRecords", [_emberConcurrencyDecorators.restartableTask], Object.getOwnPropertyDescriptor(_class.prototype, "searchRecords"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "paginateArtists", [_emberConcurrencyDecorators.dropTask], Object.getOwnPropertyDescriptor(_class.prototype, "paginateArtists"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "paginateAlbums", [_emberConcurrencyDecorators.dropTask], Object.getOwnPropertyDescriptor(_class.prototype, "paginateAlbums"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "paginateTracks", [_emberConcurrencyDecorators.dropTask], Object.getOwnPropertyDescriptor(_class.prototype, "paginateTracks"), _class.prototype)), _class);
   _exports.default = SearchController;
 });
 ;define("spotify-autocomplete/data-adapter", ["exports", "@ember-data/debug"], function (_exports, _debug) {
@@ -1617,13 +1714,14 @@
     }
   });
 });
-;define("spotify-autocomplete/serializers/application", ["exports", "@ember-data/serializer/json-api"], function (_exports, _jsonApi) {
+;define("spotify-autocomplete/serializers/application", ["exports", "@ember-data/serializer/json-api", "spotify-autocomplete/config/environment"], function (_exports, _jsonApi, _environment) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
   _exports.default = void 0;
+  const DEFAULT_IMG_URL = _environment.default.defaultImageUrl;
   class ApplicationSerializer extends _jsonApi.default {
     normalizeFindRecordResponse(store, primaryModelClass, payload, id, requestType) {
       if (primaryModelClass.name === 'ArtistModel') {
@@ -1660,9 +1758,9 @@
         id: record.id,
         attributes: {
           name: record.name,
-          imgLg: record.images[0].url,
-          imgMd: record.images[1].url,
-          imgXs: record.images[2].url,
+          imgLg: record.images.length > 0 ? record.images[0].url : DEFAULT_IMG_URL,
+          imgMd: record.images.length > 0 ? record.images[1].url : DEFAULT_IMG_URL,
+          imgXs: record.images.length > 0 ? record.images[2].url : DEFAULT_IMG_URL,
           releaseDate: new Date(record.release_date).toDateString()
         },
         relationships: {
@@ -1681,9 +1779,9 @@
         id: record.id,
         attributes: {
           name: record.name,
-          imgLg: record.images[0].url,
-          imgMd: record.images[1].url,
-          imgXs: record.images[2].url
+          imgLg: record.images[0] ? record.images[0].url : DEFAULT_IMG_URL,
+          imgMd: record.images[1] ? record.images[1].url : DEFAULT_IMG_URL,
+          imgXs: record.images[2] ? record.images[2].url : DEFAULT_IMG_URL
         }
       };
     }
@@ -1700,9 +1798,9 @@
             data: {
               type: 'album',
               id: record.album.id
-              /*imgLg: record.album.images[0].url,
-              imgMd: record.album.images[1].url,
-              imgXs: record.album.images[2].url,*/
+              //imgLg: record.album.images[0].url,
+              //imgMd: record.album.images[1].url,
+              //imgXs: record.album.images[2].url,
             }
           }
         }
@@ -1743,6 +1841,9 @@
   function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) { var desc = {}; Object.keys(descriptor).forEach(function (key) { desc[key] = descriptor[key]; }); desc.enumerable = !!desc.enumerable; desc.configurable = !!desc.configurable; if ('value' in desc || desc.initializer) { desc.writable = true; } desc = decorators.slice().reverse().reduce(function (desc, decorator) { return decorator(target, property, desc) || desc; }, desc); if (context && desc.initializer !== void 0) { desc.value = desc.initializer ? desc.initializer.call(context) : void 0; desc.initializer = undefined; } if (desc.initializer === void 0) { Object.defineProperty(target, property, desc); desc = null; } return desc; }
   function _initializerWarningHelper(descriptor, context) { throw new Error('Decorating class property failed. Please ensure that ' + 'proposal-class-properties is enabled and runs after the decorators transform.'); }
   const SEARCH_TYPE = 'album,artist,track';
+  const ARTIST_TYPE = 'artist';
+  const ALBUM_TYPE = 'album';
+  const TRACK_TYPE = 'track';
   const LIMIT = 10;
   let AjaxService = (_class = class AjaxService extends _service.default {
     constructor() {
@@ -1756,6 +1857,9 @@
       _defineProperty(this, "grantType", _environment.default.spotify.grantType);
       _defineProperty(this, "clientId", _environment.default.spotify.clientId);
       _defineProperty(this, "clientSecret", _environment.default.spotify.clientSecret);
+      _defineProperty(this, "artistOffset", 1);
+      _defineProperty(this, "albumOffset", 1);
+      _defineProperty(this, "trackOffset", 1);
     }
     get headers() {
       return {
@@ -1818,6 +1922,45 @@
       const jsonResponse = await response.json();
       this.store.pushPayload({
         data: [...jsonResponse.albums.items, ...jsonResponse.artists.items, ...jsonResponse.tracks.items]
+      });
+    }
+    async paginateArtists(next, query) {
+      if (!this.accessToken) {
+        await this.setAccessToken();
+      }
+      this.artistOffset = next ? this.artistOffset + LIMIT : this.artistOffset - LIMIT;
+      const response = await fetch(`${this.host}/${this.namespace}/search?type=${ARTIST_TYPE}&limit=${LIMIT}&offset=${this.artistOffset}&q=${query}`, {
+        headers: this.headers
+      });
+      const jsonResponse = await response.json();
+      this.store.pushPayload({
+        data: jsonResponse.artists.items
+      });
+    }
+    async paginateAlbums(next, query) {
+      if (!this.accessToken) {
+        await this.setAccessToken();
+      }
+      this.albumOffset = next ? this.albumOffset + LIMIT : this.albumOffset - LIMIT;
+      const response = await fetch(`${this.host}/${this.namespace}/search?type=${ALBUM_TYPE}&limit=${LIMIT}&offset=${this.albumOffset}&q=${query}`, {
+        headers: this.headers
+      });
+      const jsonResponse = await response.json();
+      this.store.pushPayload({
+        data: jsonResponse.albums.items
+      });
+    }
+    async paginateTracks(next, query) {
+      if (!this.accessToken) {
+        await this.setAccessToken();
+      }
+      this.trackOffset = next ? this.trackOffset + LIMIT : this.trackOffset - LIMIT;
+      const response = await fetch(`${this.host}/${this.namespace}/search?type=${TRACK_TYPE}&limit=${LIMIT}&offset=${this.trackOffset}&q=${query}`, {
+        headers: this.headers
+      });
+      const jsonResponse = await response.json();
+      this.store.pushPayload({
+        data: jsonResponse.tracks.items
       });
     }
   }, (_descriptor = _applyDecoratedDescriptor(_class.prototype, "store", [_service.inject], {
@@ -1933,8 +2076,8 @@
   });
   _exports.default = void 0;
   var _default = (0, _templateFactory.createTemplateFactory)({
-    "id": "GyQQjek/",
-    "block": "[[[11,\"section\"],[24,0,\"container\"],[4,[38,0],[[28,[37,1],[[30,0,[\"searchRecords\"]]],null],[30,0,[\"query\"]]],null],[12],[1,\"\\n  \"],[10,\"h1\"],[12],[1,[28,[35,2],[\"search.title\"],null]],[13],[1,\"\\n\\n  \"],[10,0],[15,0,[29,[\"ui icon input container_input \",[52,[30,0,[\"loading\"]],\"loading\"]]]],[12],[1,\"\\n    \"],[8,[39,4],[[24,\"placeholder\",\"Search...\"],[4,[38,5],[\"keyup\",[28,[37,1],[[30,0,[\"updateQuery\"]]],null]],null]],null,null],[1,\"\\n    \"],[10,\"i\"],[14,0,\"search icon\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[41,[30,0,[\"loading\"]],[[[1,\"    \"],[10,0],[12],[1,\"Loading...\"],[13],[1,\"\\n\"]],[]],[[[1,\"    \"],[8,[39,6],null,[[\"@artists\",\"@albums\",\"@tracks\"],[[30,0,[\"artists\"]],[30,0,[\"albums\"]],[30,0,[\"tracks\"]]]],null],[1,\"\\n\"]],[]]],[1,\"\\n\"],[13],[1,\"\\n\\n\"],[46,[28,[37,8],null,null],null,null,null],[1,\"\\n\\n\\n\"]],[],false,[\"did-update\",\"perform\",\"t\",\"if\",\"input\",\"on\",\"result-list\",\"component\",\"-outlet\"]]",
+    "id": "n0MeY0BP",
+    "block": "[[[11,\"section\"],[24,0,\"container\"],[4,[38,0],[[28,[37,1],[[30,0,[\"searchRecords\"]]],null],[30,0,[\"query\"]]],null],[12],[1,\"\\n  \"],[10,\"h1\"],[12],[1,[28,[35,2],[\"search.title\"],null]],[13],[1,\"\\n\\n  \"],[10,0],[15,0,[29,[\"ui icon input container_input \",[52,[30,0,[\"loading\"]],\"loading\"]]]],[12],[1,\"\\n    \"],[8,[39,4],[[24,\"placeholder\",\"Search...\"],[4,[38,5],[\"keyup\",[28,[37,1],[[30,0,[\"updateQuery\"]]],null]],null]],null,null],[1,\"\\n    \"],[10,\"i\"],[14,0,\"search icon\"],[12],[13],[1,\"\\n  \"],[13],[1,\"\\n\\n\"],[41,[30,0,[\"loading\"]],[[[1,\"    \"],[10,0],[12],[1,\"Loading...\"],[13],[1,\"\\n\"]],[]],[[[1,\"    \"],[8,[39,6],null,[[\"@artists\",\"@albums\",\"@tracks\",\"@paginateArtists\",\"@paginateAlbums\",\"@paginateTracks\"],[[30,0,[\"artists\"]],[30,0,[\"albums\"]],[30,0,[\"tracks\"]],[30,0,[\"paginateArtists\"]],[30,0,[\"paginateAlbums\"]],[30,0,[\"paginateTracks\"]]]],null],[1,\"\\n\"]],[]]],[1,\"\\n\"],[13],[1,\"\\n\"],[46,[28,[37,8],null,null],null,null,null],[1,\"\\n\\n\\n\"]],[],false,[\"did-update\",\"perform\",\"t\",\"if\",\"input\",\"on\",\"result-list\",\"component\",\"-outlet\"]]",
     "moduleName": "spotify-autocomplete/templates/search.hbs",
     "isStrictMode": false
   });
@@ -2073,7 +2216,7 @@ catch(err) {
 
 ;
           if (!runningTests) {
-            require("spotify-autocomplete/app")["default"].create({"name":"spotify-autocomplete","version":"0.0.0+3c2d9a16"});
+            require("spotify-autocomplete/app")["default"].create({"name":"spotify-autocomplete","version":"0.0.0+4a429c61"});
           }
         
 //# sourceMappingURL=spotify-autocomplete.map

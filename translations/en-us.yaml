@@ -6,3 +6,5 @@ track: Track
 artists: Artists
 albums: Albums
 tracks: Tracks
+next: Next
+prev: Prev

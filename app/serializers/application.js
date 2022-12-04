@@ -1,4 +1,7 @@
 import JSONAPISerializer from '@ember-data/serializer/json-api';
+import ENV from 'spotify-autocomplete/config/environment';
+
+const DEFAULT_IMG_URL = ENV.defaultImageUrl;
 
 export default class ApplicationSerializer extends JSONAPISerializer {
     normalizeFindRecordResponse(store, primaryModelClass, payload, id, requestType) {
@@ -32,9 +35,9 @@ export default class ApplicationSerializer extends JSONAPISerializer {
             id: record.id,
             attributes: {
                 name: record.name,
-                imgLg: record.images[0].url,
-                imgMd: record.images[1].url,
-                imgXs: record.images[2].url,
+                imgLg: record.images.length > 0  ? record.images[0].url : DEFAULT_IMG_URL,
+                imgMd: record.images.length > 0 ? record.images[1].url : DEFAULT_IMG_URL,
+                imgXs: record.images.length > 0 ? record.images[2].url : DEFAULT_IMG_URL,
                 releaseDate: new Date(record.release_date).toDateString(),
             },
             relationships: {
@@ -51,9 +54,9 @@ export default class ApplicationSerializer extends JSONAPISerializer {
             id: record.id,
             attributes: {
                 name: record.name,
-                imgLg: record.images[0].url,
-                imgMd: record.images[1].url,
-                imgXs: record.images[2].url,
+                imgLg: record.images[0] ? record.images[0].url : DEFAULT_IMG_URL,
+                imgMd: record.images[1] ? record.images[1].url : DEFAULT_IMG_URL,
+                imgXs: record.images[2] ? record.images[2].url : DEFAULT_IMG_URL,
             },
         };
     }
@@ -72,9 +75,9 @@ export default class ApplicationSerializer extends JSONAPISerializer {
                     data: {
                         type: 'album',
                         id: record.album.id,
-                        /*imgLg: record.album.images[0].url,
-                        imgMd: record.album.images[1].url,
-                        imgXs: record.album.images[2].url,*/
+                        //imgLg: record.album.images[0].url,
+                        //imgMd: record.album.images[1].url,
+                        //imgXs: record.album.images[2].url,
                     }
                 },
             },
