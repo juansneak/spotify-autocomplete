@@ -1,0 +1,21 @@
+<aside class="sidebar">
+
+  <h1>{{t "track"}}</h1>
+
+  <article class="ui card">
+    <div class="image">
+      <img src={{this.model.album.imgMd}}>
+    </div>
+    <div class="content">
+      <span class="header">{{this.model.album.name}}</span>
+      <div class="meta">
+        <span class="date">{{this.model.album.releaseDate}}</span>
+      </div>
+      <div class="description">
+        <p>{{this.model.name}}</p>
+        <p>{{this.model.durationMs}}</p>
+      </div>
+    </div>
+  </article>
+</aside>
+

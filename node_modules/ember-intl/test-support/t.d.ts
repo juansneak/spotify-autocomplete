@@ -1,0 +1,18 @@
+declare const _default: {
+    (key: string, options?: (import("../addon/services/intl").TOptions & {
+        htmlSafe?: false | undefined;
+    }) | undefined): string;
+    (key: string, options: import("../addon/services/intl").TOptions & {
+        htmlSafe: true;
+    }): string | import("@ember/template/-private/handlebars").SafeString;
+    (key: string, options?: import("../addon/services/intl").TOptions | undefined): string | import("@ember/template/-private/handlebars").SafeString;
+};
+/**
+ * Invokes the `t` method of the `intl` service.
+ *
+ * @function t
+ * @param {string} key
+ * @param {object} [options]
+ * @return {string}
+ */
+export default _default;

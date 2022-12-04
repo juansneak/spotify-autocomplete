@@ -1,0 +1,29 @@
+<section
+  class="container"
+  {{did-update (perform this.searchRecords) this.query}}
+>
+  <h1>{{t "search.title"}}</h1>
+
+  <div class="ui icon input container_input {{if this.loading "loading"}}">
+    <Input
+      placeholder="Search..."
+      {{on "keyup" (perform this.updateQuery)}}
+    />
+    <i class="search icon"></i>
+  </div>
+
+  {{#if this.loading }}
+    <div>Loading...</div>
+  {{else}}
+    <ResultList
+      @artists={{this.artists}}
+      @albums={{this.albums}}
+      @tracks={{this.tracks}}
+    />
+  {{/if}}
+
+</section>
+
+{{outlet}}
+
+

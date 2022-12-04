@@ -1,0 +1,19 @@
+.main {
+  display: flex;
+}
+
+.container {
+  width: 800px;
+  margin: 0 auto;
+  padding: 30px;
+}
+.container_input {
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.sidebar {
+  width: 500px;
+  padding: 30px;
+  background-color: #e7e7e7;
+}

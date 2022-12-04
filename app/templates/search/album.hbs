@@ -1,0 +1,29 @@
+<aside class="sidebar">
+
+  <h1>{{t "album"}}</h1>
+
+  <article class="ui card">
+    <div class="image">
+      <img src={{this.model.imgMd}}>
+    </div>
+    <div class="content">
+      <span class="header">{{this.model.name}}</span>
+      <div class="meta">
+        <span class="date">{{this.model.releaseDate}}</span>
+      </div>
+    </div>
+  </article>
+
+  <h3>{{t "tracks"}}</h3>
+
+  {{#each this.model.tracks as |track|}}
+    <p>
+      <LinkTo @route="search.track" @model={{track.id}}>{{track.name}} {{track.durationMs}}</LinkTo>
+    </p>
+  {{/each}}
+
+</aside>
+
+
+
+

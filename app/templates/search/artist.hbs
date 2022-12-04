@@ -1,0 +1,30 @@
+<aside class="sidebar">
+
+  <h1>{{t "artist"}}</h1>
+
+  <article class="ui card">
+    <div class="image">
+      <img src={{this.model.imgMd}}>
+    </div>
+    <div class="content">
+      <span class="header">{{this.model.name}}</span>
+    </div>
+  </article>
+
+  <h3>{{t "albums"}}</h3>
+
+  <div class="ui items">
+    {{#each this.model.albums as |album|}}
+      <div class="item">
+        <div class="ui tiny image">
+          <img src={{album.imgXs}}>
+        </div>
+        <div class="middle aligned content">
+          <LinkTo @route="search.album" @model={{album.id}}>{{album.name}}</LinkTo>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+
+</aside>
+
