@@ -7,13 +7,14 @@
   <div class="ui icon input container_input {{if this.loading "loading"}}">
     <Input
       placeholder="Search..."
-      {{on "keyup" (perform this.updateQuery)}}
+      {{on "input" (perform this.updateQuery)}}
+      @value={{this.query}}
     />
     <i class="search icon"></i>
   </div>
 
   {{#if this.loading }}
-    <div>Loading...</div>
+    <div class="ui active centered inline loader"></div>
   {{else}}
     <ResultList
       @artists={{this.artists}}
@@ -22,6 +23,9 @@
       @paginateArtists={{this.paginateArtists}}
       @paginateAlbums={{this.paginateAlbums}}
       @paginateTracks={{this.paginateTracks}}
+      @artistOffset={{this.artistOffset}}
+      @albumOffset={{this.albumOffset}}
+      @trackOffset={{this.trackOffset}}
     />
   {{/if}}
 

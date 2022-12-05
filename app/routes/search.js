@@ -1,17 +1,37 @@
 import Route from '@ember/routing/route';
+import { isPresent } from '@ember/utils';
 import { inject as service } from '@ember/service';
+import { LIMIT } from 'spotify-autocomplete/services/ajax';
 
 export default class SearchRoute extends Route {
-    /* @service store
+    @service store;
 
-    setupController(controller, model) {
-        super.setupController(controller, model);
+    @service ajax;
+
+    artists;
+
+    albums;
+
+    tracks;
+
+    get limit() {
+        return LIMIT - 1;
     }
 
-    async model() { // TODO: if I do something like this.store.query('search') it throws an error because model search does not exist
-        return this.store.query('album',{
-            type: 'album,artist,track',
-            q: 'metallica'
-        });
-    } */
+    setupController(controller, model) {
+        super.setupController(...arguments);
+        controller.artists = this.artists;
+        controller.albums = this.albums;
+        controller.tracks = this.tracks;
+    }
+
+    beforeModel(transition) {
+        if (isPresent(transition.to.queryParams.query)) {
+            return this.ajax.search(transition.to.queryParams.query).then(() => {
+                this.artists = this.store.peekAll('artist').slice(0, this.limit);
+                this.albums = this.store.peekAll('album').slice(0, this.limit);
+                this.tracks = this.store.peekAll('track').slice(0, this.limit);
+            });
+        }
+    }
 }

@@ -21,8 +21,18 @@
         {{/each}}
       </section>
       <div class="button-container">
-        <button {{on "click" (perform @paginateArtists false)}} class="ui button">{{t "prev"}}</button>
-        <button {{on "click" (perform @paginateArtists true)}} class="ui button">{{t "next"}}</button>
+        <button
+          class="ui primary button {{if (or @paginateArtists.isRunning (eq @artistOffset 1)) "disabled"}}"
+          {{on "click" (perform @paginateArtists false)}}
+        >
+          {{t "prev"}}
+        </button>
+        <button
+          class="ui primary button {{if @paginateArtists.isRunning "disabled"}}"
+          {{on "click" (perform @paginateArtists true)}}
+        >
+          {{t "next"}}
+        </button>
       </div>
     {{/if}}
 
@@ -40,8 +50,18 @@
         {{/each}}
       </section>
       <div class="button-container">
-        <button {{on "click" (perform @paginateAlbums false)}} class="ui button">{{t "prev"}}</button>
-        <button {{on "click" (perform @paginateAlbums true)}} class="ui button">{{t "next"}}</button>
+        <button
+          class="ui primary button {{if (or @paginateAlbums.isRunning (eq @albumOffset 1)) "disabled"}}"
+          {{on "click" (perform @paginateAlbums false)}}
+        >
+          {{t "prev"}}
+        </button>
+        <button
+          class="ui primary button {{if @paginateAlbums.isRunning "disabled"}}"
+          {{on "click" (perform @paginateAlbums true)}}
+        >
+          {{t "next"}}
+        </button>
       </div>
     {{/if}}
 
@@ -59,8 +79,18 @@
         {{/each}}
       </section>
       <div class="button-container">
-        <button {{on "click" (perform @paginateTracks false)}} class="ui button">{{t "prev"}}</button>
-        <button {{on "click" (perform @paginateTracks true)}} class="ui button">{{t "next"}}</button>
+        <button
+          class="ui primary button {{if (or @paginateTracks.isRunning (eq @trackOffset 1)) "disabled"}}"
+          {{on "click" (perform @paginateTracks false)}}
+        >
+          {{t "prev"}}
+        </button>
+        <button
+          class="ui primary button {{if @paginateTracks.isRunning "disabled"}}"
+          {{on "click" (perform @paginateTracks true)}}
+        >
+          {{t "next"}}
+        </button>
       </div>
     {{/if}}
 

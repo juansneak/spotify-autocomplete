@@ -5,7 +5,7 @@ export default class AlbumModel extends Model {
     @attr('string') imgXs;
     @attr('string') imgMd;
     @attr('string') imgLg;
-    @attr('date') releaseDate;
+    @attr('string') releaseDate;
     @belongsTo('artist') artist;
     @hasMany('track') tracks;
 }

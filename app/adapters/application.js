@@ -9,8 +9,6 @@ export default class ApplicationAdapter extends JSONAPIAdapter {
 
     namespace = ENV.spotify.apiNamespace;
 
-    accessToken = ENV.accessToken;
-
     headers = {
         Authorization: `Bearer ${this.ajaxService.accessToken}`
     };

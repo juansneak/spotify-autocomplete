@@ -1,7 +1,5 @@
 <aside class="sidebar">
-
   <h1>{{t "track"}}</h1>
-
   <article class="ui card">
     <div class="image">
       <img src={{this.model.album.imgMd}}>
@@ -13,7 +11,7 @@
       </div>
       <div class="description">
         <p>{{this.model.name}}</p>
-        <p>{{this.model.durationMs}}</p>
+        <p>{{ms-to-minutes this.model.durationMs}}</p>
       </div>
     </div>
   </article>

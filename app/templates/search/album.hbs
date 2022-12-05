@@ -18,7 +18,7 @@
 
   {{#each this.model.tracks as |track|}}
     <p>
-      <LinkTo @route="search.track" @model={{track.id}}>{{track.name}} {{track.durationMs}}</LinkTo>
+      <LinkTo @route="search.track" @model={{track.id}}>{{track.name}} {{ms-to-minutes track.durationMs}}</LinkTo>
     </p>
   {{/each}}
 

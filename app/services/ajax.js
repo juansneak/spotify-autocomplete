@@ -5,7 +5,8 @@ const SEARCH_TYPE = 'album,artist,track';
 const ARTIST_TYPE = 'artist';
 const ALBUM_TYPE = 'album';
 const TRACK_TYPE = 'track';
-const LIMIT = 10;
+
+export const LIMIT = 10;
 
 export default class AjaxService extends Service {
     @service store;
@@ -25,12 +26,6 @@ export default class AjaxService extends Service {
     clientId =  ENV.spotify.clientId;
 
     clientSecret = ENV.spotify.clientSecret;
-
-    artistOffset = 1
-
-    albumOffset = 1;
-
-    trackOffset = 1;
 
     get headers() {
         return { Authorization: `Bearer ${this.accessToken}` };
@@ -105,15 +100,13 @@ export default class AjaxService extends Service {
         });
     }
 
-    async paginateArtists(next, query) {
+    async paginateArtists(next, query, offset) {
         if (!this.accessToken) {
             await this.setAccessToken();
         }
 
-        this.artistOffset = next ? this.artistOffset + LIMIT : this.artistOffset - LIMIT;
-
         const response = await fetch(
-            `${this.host}/${this.namespace}/search?type=${ARTIST_TYPE}&limit=${LIMIT}&offset=${this.artistOffset}&q=${query}`,
+            `${this.host}/${this.namespace}/search?type=${ARTIST_TYPE}&limit=${LIMIT}&offset=${offset}&q=${query}`,
             { headers: this.headers }
         );
         const jsonResponse = await response.json();
@@ -123,15 +116,13 @@ export default class AjaxService extends Service {
         });
     }
 
-    async paginateAlbums(next, query) {
+    async paginateAlbums(next, query, offset) {
         if (!this.accessToken) {
             await this.setAccessToken();
         }
 
-        this.albumOffset = next ? this.albumOffset + LIMIT : this.albumOffset - LIMIT;
-
         const response = await fetch(
-            `${this.host}/${this.namespace}/search?type=${ALBUM_TYPE}&limit=${LIMIT}&offset=${this.albumOffset}&q=${query}`,
+            `${this.host}/${this.namespace}/search?type=${ALBUM_TYPE}&limit=${LIMIT}&offset=${offset}&q=${query}`,
             { headers: this.headers }
         );
         const jsonResponse = await response.json();
@@ -141,15 +132,13 @@ export default class AjaxService extends Service {
         });
     }
 
-    async paginateTracks(next, query) {
+    async paginateTracks(next, query, offset) {
         if (!this.accessToken) {
             await this.setAccessToken();
         }
 
-        this.trackOffset = next ? this.trackOffset + LIMIT : this.trackOffset - LIMIT;
-
         const response = await fetch(
-            `${this.host}/${this.namespace}/search?type=${TRACK_TYPE}&limit=${LIMIT}&offset=${this.trackOffset}&q=${query}`,
+            `${this.host}/${this.namespace}/search?type=${TRACK_TYPE}&limit=${LIMIT}&offset=${offset}&q=${query}`,
             { headers: this.headers }
         );
         const jsonResponse = await response.json();
