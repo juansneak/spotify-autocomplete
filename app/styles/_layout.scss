@@ -22,3 +22,14 @@
   margin-top: 20px;
   text-align: center;
 }
+
+.ui.modal {
+  display: block !important;
+  .close-button {
+    cursor: pointer;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+}
