@@ -1,5 +1,14 @@
-<aside class="sidebar">
-  <h1>{{t "track"}}</h1>
+<aside class="sidebar {{if (not this.showModal) "sidebar--hidden"}}">
+  <div class="sidebar_header">
+    <h1>{{t "track"}}</h1>
+    <button
+      class="mini ui button sidebar_close_button"
+      {{on "click" (fn (mut this.showModal) false)}}
+    >
+      X
+    </button>
+  </div>
+
   <article class="ui card">
     <div class="image">
       <img src={{this.model.album.imgMd}}>

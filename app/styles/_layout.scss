@@ -16,6 +16,32 @@
   width: 500px;
   padding: 30px;
   background-color: $primary-color;
+
+  &_header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &_close_button {
+    display: none !important;
+    height: 30px;
+
+    @include media-breakpoint-down(sm) {
+      display: block !important;
+    }
+  }
+
+  &--hidden {
+    @include media-breakpoint-down(sm) {
+      display: none;
+    }
+  }
+
+  @include media-breakpoint-down(sm) {
+    position: fixed;
+    width: 100%;
+    min-height: 100%;
+  }
 }
 
 .button-container {
@@ -23,13 +49,21 @@
   text-align: center;
 }
 
-.ui.modal {
-  display: block !important;
-  .close-button {
-    cursor: pointer;
+.item-card {
+  @include media-breakpoint-down(md) {
+    width: 100% !important;
   }
 
-  .sidebar {
-    width: 100%;
+}
+
+.ui {
+  &.grid > [class*="four wide"] {
+    &.column {
+      &.item-column {
+        @include media-breakpoint-down(md) {
+          width: 100% !important;
+        }
+      }
+    }
   }
 }

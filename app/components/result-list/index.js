@@ -3,7 +3,6 @@ import { tracked } from '@glimmer/tracking';
 import Component from '@glimmer/component';
 
 export default class ResultListComponent extends Component {
-
     @tracked artistsTabActive = true;
 
     @tracked albumsTabActive = false;
@@ -30,5 +29,4 @@ export default class ResultListComponent extends Component {
         this.albumsTabActive = false;
         this.tracksTabActive = true;
     }
-
 }

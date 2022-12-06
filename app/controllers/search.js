@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { isPresent } from '@ember/utils';
-import { set, action } from '@ember/object';
+import { set } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { timeout } from 'ember-concurrency';
 import { task, restartableTask, dropTask } from 'ember-concurrency-decorators';
@@ -12,8 +12,6 @@ const UNLOAD_TIME = 1000;
 
 export default class SearchController extends Controller {
     @service ajax;
-
-    @service resolutionManager;
 
     query = null;
 
@@ -30,8 +28,6 @@ export default class SearchController extends Controller {
     @tracked albums;
 
     @tracked tracks;
-
-    showModal = true;
 
     get limit() {
         return LIMIT - 1;

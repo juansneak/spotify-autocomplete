@@ -30,20 +30,5 @@
   {{/if}}
 
 </section>
+{{outlet}}
 
-{{#if this.resolutionManager.isDesktop}}
-  {{outlet}}
-{{else}}
-
-  {{#unless (not this.showModal)}} <!-- TODO: We could create a Modal component -->
-    <div class="ui modal">
-      <div class="header close-button">
-        <a {{on "click" (fn (mut this.showModal) false)}}>X</a>
-      </div>
-      <div class="content">
-        {{outlet}}
-      </div>
-    </div>
-  {{/unless}}
-
-{{/if}}

@@ -75,9 +75,6 @@ export default class ApplicationSerializer extends JSONAPISerializer {
                     data: {
                         type: 'album',
                         id: record.album.id,
-                        //imgLg: record.album.images[0].url,
-                        //imgMd: record.album.images[1].url,
-                        //imgXs: record.album.images[2].url,
                     }
                 },
             },

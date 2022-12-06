@@ -8,3 +8,7 @@ albums: Albums
 tracks: Tracks
 next: Next
 prev: Prev
+error:
+  access-token: "Your Spotify Access Token is wrong or has expired. Please go to the "
+  home-page: Home Page
+  new-token: " to automatically generate a new token"

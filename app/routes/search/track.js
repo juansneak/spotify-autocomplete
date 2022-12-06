@@ -7,6 +7,11 @@ export default class TrackRoute extends Route {
 
     @service ajax;
 
+    setupController(controller, model) {
+        super.setupController(...arguments);
+        controller.showModal = true;
+    }
+
     beforeModel(transition) {
         if (isEmpty(this.ajax.accessToken)) {
             return this.transitionTo('access-error');

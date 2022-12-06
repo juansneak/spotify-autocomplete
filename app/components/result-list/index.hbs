@@ -10,7 +10,7 @@
     {{#if this.artistsTabActive}}
       <section class="ui grid">
         {{#each @artists as |artist|}}
-          <div class="four wide column">
+          <div class="four wide column item-column">
             <Card
               @name={{artist.name}}
               @id={{artist.id}}
@@ -39,7 +39,7 @@
     {{#if this.albumsTabActive}}
       <section class="ui grid">
         {{#each @albums as |album|}}
-          <div class="four wide column">
+          <div class="four wide column item-column">
             <Card
               @name={{album.name}}
               @id={{album.id}}
@@ -68,7 +68,7 @@
     {{#if this.tracksTabActive}}
       <section class="ui grid">
         {{#each @tracks as |track|}}
-          <div class="four wide column">
+          <div class="four wide column item-column">
             <Card
               @name={{track.name}}
               @id={{track.id}}
